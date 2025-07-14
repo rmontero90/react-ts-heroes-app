@@ -45,6 +45,10 @@ vi.mock('@/heroes/pages/search/SearchPage', () => ({
 }));
 
 describe('App Router', () => {
+  test('should be configured as expected', () => {
+    expect(appRouter.routes).toMatchSnapshot();
+  });
+
   test('should render home page at root path', async () => {
     const router = createMemoryRouter(appRouter.routes, {
       initialEntries: ['/'],
