@@ -3,8 +3,19 @@ import type { HeroesResponse } from "../types/get-heroes.response";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export const getHeroesByPageAction = async (): Promise<HeroesResponse> => {
-  const { data } = await heroApi.get<HeroesResponse>(`/`);
+export const getHeroesByPageAction = async (
+  page: number,
+  limit: number = 6,
+): Promise<HeroesResponse> => {
+  const vPage = isNaN(page) ? 1 : page;
+  const vLimit = isNaN(limit) ? 6 : limit;
+
+  const { data } = await heroApi.get<HeroesResponse>(`/`, {
+    params: {
+      limit: limit,
+      offset: (vPage - 1) * vLimit,
+    },
+  });
 
   const heroes = data.heroes.map((hero) => ({
     ...hero,
